@@ -48,13 +48,44 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
+  // Cancel post functionality - RESET FORM when modal closes
+  const createPostModal = document.getElementById('createPostModal');
+  const createPostForm = document.getElementById('createPostForm');
+  
+  if (createPostModal && createPostForm && imagePreview) {
+    createPostModal.addEventListener('hidden.bs.modal', function () {
+      // Reset form when modal closes (Cancel button, X button, or clicking outside)
+      createPostForm.reset();
+      imagePreview.classList.remove('show');
+      imagePreview.src = '';
+    });
+  }
+
+  // Get user info from the first post
+  const firstPost = document.querySelector('.card');
+  let userProfileImg = 'https://i.pravatar.cc/150?img=12'; // Default
+  let username = 'your_username'; // Default
+  
+  if (firstPost) {
+    const profileImgElement = firstPost.querySelector('.card-header img');
+    const usernameElement = firstPost.querySelector('.card-header strong');
+    
+    if (profileImgElement) {
+      userProfileImg = profileImgElement.src;
+    }
+    if (usernameElement) {
+      username = usernameElement.textContent;
+    }
+  }
+
   // Share post functionality - CREATE NEW POST
   const sharePostBtn = document.getElementById('sharePostBtn');
-  const createPostForm = document.getElementById('createPostForm');
   const feedContainer = document.querySelector('.container.py-4');
   
   if (sharePostBtn && createPostForm && feedContainer) {
-    sharePostBtn.addEventListener('click', function() {
+    sharePostBtn.addEventListener('click', function(e) {
+      e.preventDefault(); // Prevent any default behavior
+      
       if (createPostForm.checkValidity()) {
         // Get form values
         const caption = document.getElementById('postCaption').value;
@@ -66,12 +97,17 @@ document.addEventListener('DOMContentLoaded', function() {
         newPost.className = 'card border mb-4';
         newPost.innerHTML = `
           <!-- Post Header -->
-          <div class="card-header bg-white border-0 d-flex align-items-center py-3">
-            <img src="https://i.pravatar.cc/150?img=12" class="rounded-circle me-2" width="40" height="40" alt="User">
-            <div>
-              <strong>your_username</strong>
-              ${location ? `<br><small class="text-muted"><i class="fas fa-map-marker-alt"></i> ${location}</small>` : ''}
+          <div class="card-header bg-white border-0 d-flex align-items-center justify-content-between py-3">
+            <div class="d-flex align-items-center">
+              <img src="${userProfileImg}" class="rounded-circle me-2" width="40" height="40" alt="User">
+              <div>
+                <strong>${username}</strong>
+                ${location ? `<br><small class="text-muted"><i class="fas fa-map-marker-alt"></i> ${location}</small>` : ''}
+              </div>
             </div>
+            <button class="btn btn-link text-danger delete-post-btn" title="Delete post">
+              <i class="fas fa-trash"></i>
+            </button>
           </div>
           
           <!-- Post Image -->
@@ -91,7 +127,7 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
             <p class="fw-bold mb-1 post-likes-count">0 likes</p>
             <p class="card-text mb-1">
-              <strong>your_username</strong> ${caption}
+              <strong>${username}</strong> ${caption}
             </p>
             <small class="text-muted">Just now</small>
           </div>
@@ -120,16 +156,27 @@ document.addEventListener('DOMContentLoaded', function() {
           }
         });
         
+        // Add delete functionality to the new post
+        const deleteBtn = newPost.querySelector('.delete-post-btn');
+        deleteBtn.addEventListener('click', function() {
+          if (confirm('Are you sure you want to delete this post?')) {
+            newPost.remove();
+          }
+        });
+        
         // Close modal
-        const modal = bootstrap.Modal.getInstance(document.getElementById('createPostModal'));
-        modal.hide();
+        const modal = bootstrap.Modal.getInstance(createPostModal);
+        if (modal) {
+          modal.hide();
+        }
         
         // Reset form
         createPostForm.reset();
         imagePreview.classList.remove('show');
+        imagePreview.src = '';
         
         // Success message
-        alert('Post shared successfully! 🎉');
+        alert('Post shared!');
       } else {
         createPostForm.reportValidity();
       }
