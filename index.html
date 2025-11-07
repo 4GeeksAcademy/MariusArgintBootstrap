@@ -9,25 +9,16 @@
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
-    <!-- Instagram Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom sticky-top">
       <div class="container">
-        <!-- Instagram Logo -->
         <a class="navbar-brand fw-bold" href="#" style="font-family: 'Brush Script MT', cursive; font-size: 1.8rem;">Instagram</a>
-        
-        <!-- Search bar (visible on larger screens) -->
         <form class="d-none d-md-flex mx-auto" role="search" style="width: 300px;">
           <input class="form-control rounded-pill bg-light border-0" type="search" placeholder="🔍 Search" aria-label="Search">
         </form>
-        
-        <!-- Right side buttons -->
         <div class="d-flex align-items-center gap-2">
-          <!-- Create Post Button -->
           <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#createPostModal">
             <i class="fas fa-plus"></i> Create Post
           </button>
-          
-          <!-- Dropdown Menu -->
           <div class="dropdown">
             <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
               <i class="fas fa-bars"></i>
@@ -44,7 +35,6 @@
       </div>
     </nav>
 
-    <!-- Create Post Modal -->
     <div class="modal fade" id="createPostModal" tabindex="-1" aria-labelledby="createPostModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -54,7 +44,6 @@
           </div>
           <div class="modal-body">
             <form id="createPostForm">
-              <!-- Image Upload -->
               <div class="mb-3">
                 <label for="postImage" class="form-label">
                   <i class="fas fa-image me-2"></i>Select Image
@@ -62,16 +51,12 @@
                 <input type="file" class="form-control" id="postImage" accept="image/*" required>
                 <img id="imagePreview" class="image-preview" alt="Preview">
               </div>
-              
-              <!-- Caption -->
               <div class="mb-3">
                 <label for="postCaption" class="form-label">
                   <i class="fas fa-pencil-alt me-2"></i>Caption
                 </label>
                 <textarea class="form-control" id="postCaption" rows="3" placeholder="Write a caption..." required></textarea>
               </div>
-              
-              <!-- Location (optional) -->
               <div class="mb-3">
                 <label for="postLocation" class="form-label">
                   <i class="fas fa-map-marker-alt me-2"></i>Add Location (Optional)
@@ -88,36 +73,62 @@
       </div>
     </div>
 
-    <!-- Feed Container -->
-    <div class="container py-4" style="max-width: 614px;">
-      <!-- Instagram Post Card -->
-      <div class="card border mb-4">
-        <!-- Post Header -->
-        <div class="card-header bg-white border-0 d-flex align-items-center py-3">
-          <img src="https://m.media-amazon.com/images/I/71zTE0u2iXL._AC_UY1000_.jpg" class="rounded-circle me-2" width="40" height="40" alt="User">
-          <strong>marius.argint</strong>
-        </div>
-        
-        <!-- Post Image -->
-        <img src="https://bjjfanatics.com/cdn/shop/articles/trianglexxxx.jpg?crop=center&height=800&v=1604447283&width=800" class="card-img-top" alt="BJJ Triangle">
-        
-        <!-- Post Body -->
-        <div class="card-body">
-          <div class="post-actions">
-            <div class="actions-left">
-              <i class="far fa-heart" id="likeBtn"></i>
-              <i class="far fa-comment"></i>
-              <i class="far fa-paper-plane"></i>
+    <div class="container">
+      <ul class="nav nav-pills justify-content-center gap-2 py-3" id="viewTab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="single-tab" data-bs-toggle="tab" data-bs-target="#singleView" type="button" role="tab" aria-controls="singleView" aria-selected="true">
+            <i class="fas fa-square"></i> Single View
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="grid-tab" data-bs-toggle="tab" data-bs-target="#gridView" type="button" role="tab" aria-controls="gridView" aria-selected="false">
+            <i class="fas fa-th"></i> Grid View
+          </button>
+        </li>
+      </ul>
+    </div>
+
+    <div class="tab-content" id="viewTabContent">
+      <div class="tab-pane fade show active" id="singleView" role="tabpanel" aria-labelledby="single-tab">
+        <div class="container py-4 feed-container" id="singleFeed">
+          <div class="card border mb-4">
+            <div class="card-header bg-white border-0 d-flex align-items-center py-3">
+              <img src="https://m.media-amazon.com/images/I/71zTE0u2iXL._AC_UY1000_.jpg" class="rounded-circle me-2" width="40" height="40" alt="User">
+              <strong>marius.argint</strong>
             </div>
-            <div class="actions-right">
-              <i class="far fa-bookmark"></i>
+            <img src="https://bjjfanatics.com/cdn/shop/articles/trianglexxxx.jpg?crop=center&height=800&v=1604447283&width=800" class="card-img-top" alt="BJJ Triangle">
+            <div class="card-body">
+              <div class="post-actions">
+                <div class="actions-left">
+                  <i class="far fa-heart post-like-btn" id="likeBtn"></i>
+                  <i class="far fa-comment"></i>
+                  <i class="far fa-paper-plane"></i>
+                </div>
+                <div class="actions-right">
+                  <i class="far fa-bookmark"></i>
+                </div>
+              </div>
+              <p class="fw-bold mb-1 post-likes-count">1,234 likes</p>
+              <p class="card-text mb-1">
+                <strong>marius.argint</strong> Perfect triangle choke setup! 🥋 It Is hard to not leave a like, give it a try! Also if you don't particularly like this, why don't you try and add a post yourself?
+              </p>
+              <small class="text-muted">2 hours ago</small>
             </div>
           </div>
-          <p class="fw-bold mb-1">1,234 likes</p>
-          <p class="card-text mb-1">
-            <strong>marius.argint</strong> Perfect triangle choke setup! 🥋 It Is hard to not leave a like, give it a try! Also if you don't particularly like this, why don't you try and add a post yourself?
-          </p>
-          <small class="text-muted">2 hours ago</small>
+        </div>
+      </div>
+
+      <div class="tab-pane fade" id="gridView" role="tabpanel" aria-labelledby="grid-tab">
+        <div class="container py-4">
+          <div class="feed-container grid-view" id="gridFeed">
+            <div class="card">
+              <img class="card-img-top" src="https://bjjfanatics.com/cdn/shop/articles/trianglexxxx.jpg?crop=center&height=800&v=1604447283&width=800" alt="Grid 1">
+              <div class="grid-overlay">
+                <span><i class="fas fa-heart"></i> 1,234 likes</span>
+              </div>
+            </div>
+            
+          </div>
         </div>
       </div>
     </div>
